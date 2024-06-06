@@ -1,6 +1,7 @@
 import numpy as np
 import time as tm
 import tkinter as tk
+from tkinter import filedialog
 from colour import Color
 
 MWIDTH = 6
@@ -8,23 +9,40 @@ MHEIGHT = 5
 LARGEURCASE = 15
 HAUTEURCASE = 100
 HAUTEURTEXTE = 25
+LARGEURBOUTON=0
 HAUTEURGRADATION=40
 MARGECOTE = 40
 DIFGRADATIONTEXTE=5
 LARGEURGRAD=MWIDTH
-WIDTH = LARGEURCASE*48+MWIDTH*49 + MARGECOTE*2
+WIDTH = LARGEURCASE*48+MWIDTH*49 + MARGECOTE*2 + LARGEURBOUTON
 HEIGHT = HAUTEURCASE + MHEIGHT*2 +HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
-
-def save(tab,name) : 
-    np.savetxt(name,tab)
-
-def impor(name) :
-    return np.loadtxt(name)
 
 taille = (48,3)
 tabactuel = np.zeros(taille)
 taille=(50,3)
 tabvierge = np.zeros(taille)
+
+def save(tab,name) :
+    nom = "%s.txt" %(name)
+    np.savetxt(nom,tab)
+
+def impor(file_path) :
+    tab = np.loadtxt(file_path)
+    global tabvierge
+    taille=(50,3)
+    if (tab.shape != taille) : 
+        return
+    else : 
+        tabvierge = tab
+
+def import_file():
+    
+    file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
+    if file_path :
+		# Process the selected file (you can replace this with your own logic)
+        impor(file_path)
+	    
+        
 
 root = tk.Tk()
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
@@ -32,7 +50,7 @@ canvas.pack()
 
 def compare(index) : 
     for i in range(3) : 
-        if tabvierge[index,i]==tabvierge[48,i] : 
+        if tabvierge[index,i]!=0 : 
             return False
     return True
 
@@ -44,6 +62,8 @@ def tabatemps() :
     for i in range(0,point,1) : 
         if compare(i) : 
             tabactuel[i]=tabvierge[49]
+        else : 
+            tabactuel[i]=tabvierge[i]
     for i in range(point,48,1) :
         tabactuel[i]=tabvierge[48]
 
@@ -81,9 +101,7 @@ def graduation() :
             label.place(x=departx-7,y=grandgrady-HAUTEURTEXTE)
         else :
             gradactuel=minigrady
-        canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")
-        
-        
+        canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")   
 
 
 def dessinerbarre() :
@@ -95,15 +113,16 @@ def dessinerbarre() :
         canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline="")
 
 
-def mas() :
+def maj() :
     tabatemps()
     dessinerbarre()
-    canvas.after(10000,mas)
+    canvas.after(10000,maj)
 
-
+import_button = tk.Button(root, text="Import File", command=import_file)
+import_button.pack()
 # [R,G,B]
 debase(np.array([0.1,0.1,0.1]),np.array([0.2,1,0.2]))
-print(tabvierge)
+impor("default.txt")
 graduation()
-mas()
+maj()
 root.mainloop()
