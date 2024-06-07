@@ -71,9 +71,6 @@ def debase(couleurRien,couleurPassee) :
         tabvierge[48,i]=couleurRien[i]
         tabvierge[49,i]=couleurPassee[i]
 
-def setcase(index, couleur) : 
-    tabvierge[index]=couleur
-
 def graduation() : 
     #F0F0F2 = gris
     # ajout de graduation basé sur l'affichage de l'image
