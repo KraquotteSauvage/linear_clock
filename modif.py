@@ -9,12 +9,15 @@ MHEIGHT = 5
 LARGEURCASE = 15
 HAUTEURCASE = 50
 HAUTEURTEXTE = 25
-LARGEURBOUTON=0
 HAUTEURGRADATION=40
 MARGECOTE = 40
 DIFGRADATIONTEXTE=5
 LARGEURGRAD=MWIDTH
-WIDTH = LARGEURCASE*48+MWIDTH*49 + MARGECOTE*2 + LARGEURBOUTON
+
+# edition
+COTECASEPALETTE=LARGEURCASE*2
+
+WIDTH = LARGEURCASE*48+MWIDTH*49 + MARGECOTE*2 
 HEIGHT = HAUTEURCASE + MHEIGHT*2 +HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
 
 
@@ -107,9 +110,45 @@ def import_file_colorpalette():
         impor_colorpalette(file_path)
 
 
+# GESTION DE LA COULEUR SELECTIONNER
+
+COULEURACTUEL=np.array([0,0,0])
+
+def setcouleur(index) : 
+    for i in range(0,3,1) :
+        COULEURACTUEL[i]=colorpalette[index,i]
+
+def setcase(index) : 
+    print("bouton")
+    for i in range(0,3,1) :
+        tabvierge[index,i]=COULEURACTUEL[i]
+
+# INITIALISATION DE LA FENETRE
 root = tk.Tk()
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
 canvas.pack()
+root.resizable(False,False)
+# GRAPHISME DE LA FENETRE
+
+def dessinerbarre() :
+    departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
+    for i in range(0,48,1) : 
+        c = Color(rgb=(tabvierge[i,0],tabvierge[i,1],tabvierge[i,2]))
+        color = "%s" %(c.hex)
+        tag = "buton%s" %(i)
+        departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
+        canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline="")
+
+def initbouton() :
+    departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
+    for i in range(0,48,1) : 
+        c = Color(rgb=(tabvierge[i,0],tabvierge[i,1],tabvierge[i,2]))
+        color = "%s" %(c.hex)
+        tag = "buton%s" %(i)
+        departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
+        canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,tags=tag,fill=color,outline="")
+        canvas.tag_bind(tag,"<Button-1>",setcase(i))
+        canvas.pack()
 
 def graduation() : 
     #F0F0F2 = gris
@@ -137,4 +176,8 @@ def graduation() :
             gradactuel=minigrady
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")
 
-
+COULEURACTUEL=np.array([1,1,1])
+initbouton()
+graduation()
+dessinerbarre()
+root.mainloop()
