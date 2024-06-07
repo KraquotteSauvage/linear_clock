@@ -7,7 +7,7 @@ from colour import Color
 MWIDTH = 6
 MHEIGHT = 5
 LARGEURCASE = 15
-HAUTEURCASE = 100
+HAUTEURCASE = 50
 HAUTEURTEXTE = 25
 LARGEURBOUTON=0
 HAUTEURGRADATION=40
@@ -22,9 +22,6 @@ tabactuel = np.zeros(taille)
 taille=(50,3)
 tabvierge = np.zeros(taille)
 
-def save(tab,name) :
-    nom = "%s.txt" %(name)
-    np.savetxt(nom,tab)
 
 def impor(file_path) :
     tab = np.loadtxt(file_path)
