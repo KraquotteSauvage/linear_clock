@@ -44,6 +44,7 @@ def import_file():
 root = tk.Tk()
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
 canvas.pack()
+root.resizable(False,False)
 
 def compare(index) : 
     for i in range(3) : 
