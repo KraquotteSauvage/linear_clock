@@ -175,6 +175,7 @@ def init() :
         color = "%s" %(c.hex)
         departx=index*(COTECASEPALETTE*2) + COTECASEPALETTE
         LISTERECTANGLEPALETTE.append(canvas.create_rectangle(departx,departy,departx+COTECASEPALETTE,departy+COTECASEPALETTE,fill=color,outline=""))
+    # creation bouton interraction avec la palette de couleur
     rectangle = canvas.create_rectangle(COTECASEPALETTE,departy,10*(COTECASEPALETTE*2) + COTECASEPALETTE,departy+COTECASEPALETTE,fill="",outline="")
     canvas.tag_bind(rectangle,'<Button-1>',inputcolorpalette)
 
@@ -204,8 +205,8 @@ def graduation() :
             gradactuel=minigrady
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")
 
-COULEURACTUEL=np.array([1,1,1])
 impor_colorpalette(save_file_path_colorpalette)
+setcouleur(0)
 init()
 graduation()
 root.mainloop()
