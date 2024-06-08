@@ -16,9 +16,10 @@ LARGEURGRAD=MWIDTH
 
 # edition
 COTECASEPALETTE=LARGEURCASE*2
+HAUTEUREDITION=COTECASEPALETTE*2
 
 WIDTH = LARGEURCASE*48+MWIDTH*49 + MARGECOTE*2 
-HEIGHT = HAUTEURCASE + MHEIGHT*2 +HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
+HEIGHT = HAUTEURCASE + MHEIGHT*2 +HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+HAUTEUREDITION
 
 
 # TABVIERGE BOUTON
@@ -132,6 +133,7 @@ root.resizable(False,False)
 
 # Liste rectangle coloré
 LISTERECTANGLE=[]
+LISTERECTANGLEPALETTE=[]
 
 # GRAPHISME DE LA FENETRE
 def dessinerbarreindex(index) :
@@ -147,16 +149,34 @@ def inputprogramme(event) :
             setcase(index)
             dessinerbarreindex(index)
 
-def initbouton() :
+def inputcolorpalette(event) :
+    for index in range(0,10,1) :
+        departx=index*(COTECASEPALETTE*2) + COTECASEPALETTE
+        if ((event.x >= departx) and (event.x <= departx+COTECASEPALETTE)) :
+            setcouleur(index)
+
+
+# initialise les boutons et les graphisùe de l'interface
+def init() :
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
+    # Création des différents rectangle de couleur du programme
     for index in range(0,48,1) : 
         c = Color(rgb=(tabvierge[index,0],tabvierge[index,1],tabvierge[index,2]))
         color = "%s" %(c.hex)
         departx=index*(LARGEURCASE+MWIDTH) + MARGECOTE
         LISTERECTANGLE.append(canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline=""))
-    tag = "programme"
-    rectangle = canvas.create_rectangle(MARGECOTE,departy,48*(LARGEURCASE+MWIDTH) + MARGECOTE,departy+HAUTEURCASE,fill="",outline="",tags=tag)
+    # Creation bouton pour la modification du programme
+    rectangle = canvas.create_rectangle(MARGECOTE,departy,48*(LARGEURCASE+MWIDTH) + MARGECOTE,departy+HAUTEURCASE,fill="",outline="")
     canvas.tag_bind(rectangle,'<Button-1>',inputprogramme)
+    departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
+    # Création des rectangles pour la selection des couleurs sur la palette de couleur
+    for index in range(0,10,1) : 
+        c = Color(rgb=(colorpalette[index,0],colorpalette[index,1],colorpalette[index,2]))
+        color = "%s" %(c.hex)
+        departx=index*(COTECASEPALETTE*2) + COTECASEPALETTE
+        LISTERECTANGLEPALETTE.append(canvas.create_rectangle(departx,departy,departx+COTECASEPALETTE,departy+COTECASEPALETTE,fill=color,outline=""))
+    rectangle = canvas.create_rectangle(COTECASEPALETTE,departy,10*(COTECASEPALETTE*2) + COTECASEPALETTE,departy+COTECASEPALETTE,fill="",outline="")
+    canvas.tag_bind(rectangle,'<Button-1>',inputcolorpalette)
 
 def graduation() : 
     #F0F0F2 = gris
@@ -185,6 +205,6 @@ def graduation() :
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")
 
 COULEURACTUEL=np.array([1,1,1])
-initbouton()
+init()
 graduation()
 root.mainloop()
