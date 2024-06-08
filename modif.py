@@ -89,7 +89,7 @@ def save_new_file_colorpalette():
 # enregistre colopalette dans le fichier charger
 def save_file_colopalette() :
     global save_file_path_colorpalette
-    save_tabvierge(save_file_path_tabvierge)
+    save_colorpalette(save_file_path_colorpalette)
 
 # importe une colorpalette dont le nom est donnee en intro
 def impor_colorpalette(file_path) :
@@ -205,6 +205,7 @@ def graduation() :
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")
 
 COULEURACTUEL=np.array([1,1,1])
+impor_colorpalette(save_file_path_colorpalette)
 init()
 graduation()
 root.mainloop()
