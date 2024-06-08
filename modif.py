@@ -128,27 +128,35 @@ root = tk.Tk()
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
 canvas.pack()
 root.resizable(False,False)
-# GRAPHISME DE LA FENETRE
 
-def dessinerbarre() :
-    departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
-    for i in range(0,48,1) : 
-        c = Color(rgb=(tabvierge[i,0],tabvierge[i,1],tabvierge[i,2]))
-        color = "%s" %(c.hex)
-        tag = "buton%s" %(i)
-        departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
-        canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline="")
+
+# Liste rectangle coloré
+LISTERECTANGLE=[]
+
+# GRAPHISME DE LA FENETRE
+def dessinerbarreindex(index) :
+    c = Color(rgb=(tabvierge[index,0],tabvierge[index,1],tabvierge[index,2]))
+    color = "%s" %(c.hex)
+    canvas.itemconfig(LISTERECTANGLE[index], fill=color)
+        
+# MODIFICATION DU PROGRAMME (BOUTON)
+def inputprogramme(event) :
+    for index in range(0,48,1) :
+        departx=index*(LARGEURCASE+MWIDTH) + MARGECOTE 
+        if ((event.x >= departx) and (event.x <= departx+LARGEURCASE)) :
+            setcase(index)
+            dessinerbarreindex(index)
 
 def initbouton() :
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
-    for i in range(0,48,1) : 
-        c = Color(rgb=(tabvierge[i,0],tabvierge[i,1],tabvierge[i,2]))
+    for index in range(0,48,1) : 
+        c = Color(rgb=(tabvierge[index,0],tabvierge[index,1],tabvierge[index,2]))
         color = "%s" %(c.hex)
-        tag = "buton%s" %(i)
-        departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
-        canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,tags=tag,fill=color,outline="")
-        canvas.tag_bind(tag,"<Button-1>",setcase(i))
-        canvas.pack()
+        departx=index*(LARGEURCASE+MWIDTH) + MARGECOTE
+        LISTERECTANGLE.append(canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline=""))
+    tag = "programme"
+    rectangle = canvas.create_rectangle(MARGECOTE,departy,48*(LARGEURCASE+MWIDTH) + MARGECOTE,departy+HAUTEURCASE,fill="",outline="",tags=tag)
+    canvas.tag_bind(rectangle,'<Button-1>',inputprogramme)
 
 def graduation() : 
     #F0F0F2 = gris
@@ -179,5 +187,4 @@ def graduation() :
 COULEURACTUEL=np.array([1,1,1])
 initbouton()
 graduation()
-dessinerbarre()
 root.mainloop()
