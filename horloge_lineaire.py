@@ -32,6 +32,7 @@ def impor(file_path) :
         return
     else : 
         tabvierge = tab
+        dessinerbarre()
 
 def import_file():
     
@@ -39,7 +40,7 @@ def import_file():
     if file_path :
 		# Process the selected file (you can replace this with your own logic)
         impor(file_path)
-        dessinerbarre()
+        
 	    
 root = tk.Tk()
 root.title("Horloge linéaire")
