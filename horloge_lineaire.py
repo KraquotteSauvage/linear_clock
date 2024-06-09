@@ -39,13 +39,17 @@ def import_file():
     if file_path :
 		# Process the selected file (you can replace this with your own logic)
         impor(file_path)
+        dessinerbarre()
 	    
-        
-
 root = tk.Tk()
+root.title("Horloge linéaire")
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
 canvas.pack()
 root.resizable(False,False)
+PLEINE_ECRAN=tk.BooleanVar()
+
+def boutonpleineecran():
+    root.attributes("-topmost", PLEINE_ECRAN.get())
 
 def compare(index) : 
     for i in range(3) : 
@@ -57,7 +61,6 @@ def tabatemps() :
     temps=tm.localtime(tm.time())
     point = temps.tm_hour*2+1
     point += temps.tm_min // 30
-    print("point = ",point)
     for i in range(0,point,1) : 
         if compare(i) : 
             tabactuel[i]=tabvierge[49]
@@ -119,9 +122,10 @@ def maj() :
 
 import_button = tk.Button(root, text="Import File", command=import_file)
 import_button.pack()
+bouton = tk.Checkbutton(root, text='Prioriser cette fenetre',variable=PLEINE_ECRAN, onvalue=True,offvalue=False, command=boutonpleineecran)
+bouton.pack()
 # [R,G,B]
 debase(np.array([0,0,0]),np.array([0,255,0]))
-impor("default.txt")
 graduation()
 maj()
 root.mainloop()
