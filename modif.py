@@ -99,6 +99,7 @@ def impor_colorpalette(file_path) :
     if (tab.shape != taille) : 
         return
     else : 
+        print(tab)
         colorpalette = tab
 
 # Importation d'un fichier colorpalette à modifier
@@ -113,11 +114,12 @@ def import_file_colorpalette():
 
 # GESTION DE LA COULEUR SELECTIONNER
 
-COULEURACTUEL=np.array([0,0,0])
+COULEURACTUEL=np.array([0.,0.,0.])
 
 def setcouleur(index) : 
     for i in range(0,3,1) :
         COULEURACTUEL[i]=colorpalette[index,i]
+    print("couleur selectionner : ",COULEURACTUEL)
 
 def setcase(index) : 
     print("bouton")
@@ -140,6 +142,10 @@ def dessinerbarreindex(index) :
     c = Color(rgb=(tabvierge[index,0],tabvierge[index,1],tabvierge[index,2]))
     color = "%s" %(c.hex)
     canvas.itemconfig(LISTERECTANGLE[index], fill=color)
+
+def reinitialiserbarre() :
+    for i in range(0,10,1) :
+        dessinerbarreindex(i)
         
 # MODIFICATION DU PROGRAMME (BOUTON)
 def inputprogramme(event) :
