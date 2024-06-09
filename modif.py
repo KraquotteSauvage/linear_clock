@@ -141,9 +141,11 @@ LISTERECTANGLEPALETTE=[]
 
 # GRAPHISME DE LA FENETRE
 def dessinerbarreindex(index) :
-    if (tabvierge[index,0]==0 and tabvierge[index,1]==0 and tabvierge[index,2]==2) :
-        index=48
-    c = Color(rgb=(tabvierge[index,0]/255,tabvierge[index,1]/255,tabvierge[index,2]/255))
+    if (tabvierge[index,0]==0 and tabvierge[index,1]==0 and tabvierge[index,2]==0) :
+        at=48
+    else :
+        at=index
+    c = Color(rgb=(tabvierge[at,0]/255,tabvierge[at,1]/255,tabvierge[at,2]/255))
     color = "%s" %(c.hex)
     canvas.itemconfig(LISTERECTANGLE[index], fill=color)
 
@@ -164,6 +166,11 @@ def inputprogramme(event) :
 def inputcouleurremplissage(_) :
     setcase(49)
     dessinerbarreindex(49)
+
+def inputcouleurarriereplan(_) :
+    setcase(48)
+    dessinerbarreindex(48)
+    reinitialiserbarre()
 
 def inputcolorpalette(event) :
     for index in range(0,TAILLE_PALETTE,1) :
@@ -191,7 +198,7 @@ def init() :
     canvas.tag_bind(rectangle,'<Button-1>',inputprogramme)
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
     # AJOUT TEXTE selection couleur
-    text=tk.Label(root,text="Selection de couleur :",fg="white",bg="#263D42")
+    text=tk.Label(root,text="Color selector :",fg="white",bg="#263D42")
     text.place(relx = 0.07, 
                    rely = 0.8,
                    anchor = 'center')
@@ -205,26 +212,39 @@ def init() :
     rectangle = canvas.create_rectangle(COTECASEPALETTE,departy,10*(COTECASEPALETTE*2) + COTECASEPALETTE*5,departy+COTECASEPALETTE,fill="",outline="")
     canvas.tag_bind(rectangle,'<Button-1>',inputcolorpalette)
     # AJOUT BOUTON suppression
-    text=tk.Button(root,text="Gomme",command=inputeraser)
+    text=tk.Button(root,text="Eraser",command=inputeraser)
     text.place(relx = 0.7, 
                    rely = 0.8,
                    anchor = 'center')
+    # ajout texte background color
+    text=tk.Label(root,text="Background :",fg="white",bg="#263D42")
+    text.place(relx = 0.78, 
+                   rely = 0.8,
+                   anchor = 'center')
+    # Ajout couleur d'arrière plan
+    c = Color(rgb=(tabvierge[48,0]/255,tabvierge[48,1]/255,tabvierge[48,2]/255))
+    color = "%s" %(c.hex)
+    departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
+    departx=COTECASEPALETTE*30
+    rectangle = canvas.create_rectangle(departx,departy,departx+COTECASEPALETTE,departy+COTECASEPALETTE,fill=color,outline="")
+    canvas.tag_bind(rectangle,'<Button-1>',inputcouleurarriereplan)
+    LISTERECTANGLE.append(rectangle)
     # AJOUT TEXTE couleur par defaut
-    text=tk.Label(root,text="Couleur de remplissage :",fg="white",bg="#263D42")
-    text.place(relx = 0.8, 
+    text=tk.Label(root,text="Progression :",fg="white",bg="#263D42")
+    text.place(relx = 0.9, 
                    rely = 0.8,
                    anchor = 'center')
     #AJOUT COULEUR DE REMPLISSAGE
     c = Color(rgb=(tabvierge[49,0]/255,tabvierge[49,1]/255,tabvierge[49,2]/255))
     color = "%s" %(c.hex)
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
-    departx=COTECASEPALETTE*32
+    departx=COTECASEPALETTE*35
     rectangle = canvas.create_rectangle(departx,departy,departx+COTECASEPALETTE,departy+COTECASEPALETTE,fill=color,outline="")
-    LISTERECTANGLE.append(rectangle)
-    LISTERECTANGLE.append(rectangle)
     canvas.tag_bind(rectangle,'<Button-1>',inputcouleurremplissage)
+    LISTERECTANGLE.append(rectangle)
+    
     # BOUTON IMPORT
-    import_button = tk.Button(root, text="Import File", command=save_new_file_tabvierge)
+    import_button = tk.Button(root, text="Save file", command=save_new_file_tabvierge)
     import_button.pack()
 
 def graduation() : 
