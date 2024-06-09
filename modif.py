@@ -26,6 +26,9 @@ HEIGHT = HAUTEURCASE + MHEIGHT*2 +HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATION
 
 taille=(50,3)
 tabvierge = np.zeros(taille)
+tabvierge[49,0]=0
+tabvierge[49,1]=255
+tabvierge[49,2]=0
 save_file_path_tabvierge = None
 
 # Permet de sauvegarder le fichier tabvierge avec le nom donnée en entrée
@@ -68,10 +71,11 @@ def import_file_tabvierge():
 
 
 # COLORPALETTE
-
-taille = (10,3)
+TAILLE_PALETTE=10
+taille = (TAILLE_PALETTE,3)
 colorpalette = np.zeros(taille)
 save_file_path_colorpalette = "default_color_palette.txt"
+ERASER = np.array([0,0,0])
 
 # Permet de sauvegarder la palette de couleur dont le nom est donnée en entrée
 def save_colorpalette(name) : 
@@ -95,7 +99,7 @@ def save_file_colopalette() :
 def impor_colorpalette(file_path) :
     tab = np.loadtxt(file_path)
     global colorpalette
-    taille=(10,3)
+    taille=(TAILLE_PALETTE,3)
     if (tab.shape != taille) : 
         return
     else : 
@@ -114,7 +118,7 @@ def import_file_colorpalette():
 
 # GESTION DE LA COULEUR SELECTIONNER
 
-COULEURACTUEL=np.array([0.,0.,0.])
+COULEURACTUEL=np.array([0,0,0])
 
 def setcouleur(index) : 
     for i in range(0,3,1) :
@@ -139,12 +143,12 @@ LISTERECTANGLEPALETTE=[]
 
 # GRAPHISME DE LA FENETRE
 def dessinerbarreindex(index) :
-    c = Color(rgb=(tabvierge[index,0],tabvierge[index,1],tabvierge[index,2]))
+    c = Color(rgb=(tabvierge[index,0]/255,tabvierge[index,1]/255,tabvierge[index,2]/255))
     color = "%s" %(c.hex)
     canvas.itemconfig(LISTERECTANGLE[index], fill=color)
 
 def reinitialiserbarre() :
-    for i in range(0,10,1) :
+    for i in range(0,48,1) :
         dessinerbarreindex(i)
         
 # MODIFICATION DU PROGRAMME (BOUTON)
@@ -155,11 +159,21 @@ def inputprogramme(event) :
             setcase(index)
             dessinerbarreindex(index)
 
+
+def inputcouleurremplissage(_) :
+    setcase(49)
+    dessinerbarreindex(49)
+
 def inputcolorpalette(event) :
-    for index in range(0,10,1) :
-        departx=index*(COTECASEPALETTE*2) + COTECASEPALETTE
+    for index in range(0,TAILLE_PALETTE,1) :
+        departx=index*(COTECASEPALETTE*2) + COTECASEPALETTE*5
         if ((event.x >= departx) and (event.x <= departx+COTECASEPALETTE)) :
             setcouleur(index)
+
+def inputeraser() :
+    for i in range(0,3,1) :
+        COULEURACTUEL[i]=ERASER[i]
+    print("couleur selectionner : ",COULEURACTUEL)
 
 
 # initialise les boutons et les graphisùe de l'interface
@@ -167,7 +181,7 @@ def init() :
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
     # Création des différents rectangle de couleur du programme
     for index in range(0,48,1) : 
-        c = Color(rgb=(tabvierge[index,0],tabvierge[index,1],tabvierge[index,2]))
+        c = Color(rgb=(tabvierge[index,0]/255,tabvierge[index,1]/255,tabvierge[index,2]/255))
         color = "%s" %(c.hex)
         departx=index*(LARGEURCASE+MWIDTH) + MARGECOTE
         LISTERECTANGLE.append(canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline=""))
@@ -175,15 +189,40 @@ def init() :
     rectangle = canvas.create_rectangle(MARGECOTE,departy,48*(LARGEURCASE+MWIDTH) + MARGECOTE,departy+HAUTEURCASE,fill="",outline="")
     canvas.tag_bind(rectangle,'<Button-1>',inputprogramme)
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
+    # AJOUT TEXTE selection couleur
+    text=tk.Label(root,text="Selection de couleur :",fg="white",bg="#263D42")
+    text.place(relx = 0.07, 
+                   rely = 0.8,
+                   anchor = 'center')
     # Création des rectangles pour la selection des couleurs sur la palette de couleur
-    for index in range(0,10,1) : 
-        c = Color(rgb=(colorpalette[index,0],colorpalette[index,1],colorpalette[index,2]))
+    for index in range(0,TAILLE_PALETTE,1) : 
+        c = Color(rgb=(colorpalette[index,0]/255,colorpalette[index,1]/255,colorpalette[index,2]/255))
         color = "%s" %(c.hex)
-        departx=index*(COTECASEPALETTE*2) + COTECASEPALETTE
+        departx=index*(COTECASEPALETTE*2) + COTECASEPALETTE*5
         LISTERECTANGLEPALETTE.append(canvas.create_rectangle(departx,departy,departx+COTECASEPALETTE,departy+COTECASEPALETTE,fill=color,outline=""))
     # creation bouton interraction avec la palette de couleur
-    rectangle = canvas.create_rectangle(COTECASEPALETTE,departy,10*(COTECASEPALETTE*2) + COTECASEPALETTE,departy+COTECASEPALETTE,fill="",outline="")
+    rectangle = canvas.create_rectangle(COTECASEPALETTE,departy,10*(COTECASEPALETTE*2) + COTECASEPALETTE*5,departy+COTECASEPALETTE,fill="",outline="")
     canvas.tag_bind(rectangle,'<Button-1>',inputcolorpalette)
+    # AJOUT BOUTON suppression
+    text=tk.Button(root,text="Gomme",command=inputeraser)
+    text.place(relx = 0.7, 
+                   rely = 0.8,
+                   anchor = 'center')
+    # AJOUT TEXTE couleur par defaut
+    text=tk.Label(root,text="Couleur de remplissage :",fg="white",bg="#263D42")
+    text.place(relx = 0.8, 
+                   rely = 0.8,
+                   anchor = 'center')
+    #AJOUT COULEUR DE REMPLISSAGE
+    c = Color(rgb=(tabvierge[49,0]/255,tabvierge[49,1]/255,tabvierge[49,2]/255))
+    color = "%s" %(c.hex)
+    departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
+    departx=COTECASEPALETTE*32
+    rectangle = canvas.create_rectangle(departx,departy,departx+COTECASEPALETTE,departy+COTECASEPALETTE,fill=color,outline="")
+    LISTERECTANGLE.append(rectangle)
+    LISTERECTANGLE.append(rectangle)
+    canvas.tag_bind(rectangle,'<Button-1>',inputcouleurremplissage)
+
 
 def graduation() : 
     #F0F0F2 = gris
