@@ -103,7 +103,10 @@ def graduation() :
 def dessinerbarre() :
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
     for i in range(0,48,1) : 
-        c = Color(rgb=(tabactuel[i,0]/255,tabactuel[i,1]/255,tabactuel[i,2]/255))
+        at=i
+        if (tabactuel[i,0]==0 and tabactuel[i,1]==0 and tabactuel[i,2]==2) :
+            at=48
+        c = Color(rgb=(tabactuel[at,0]/255,tabactuel[at,1]/255,tabactuel[at,2]/255))
         color = "%s" %(c.hex)
         departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
         canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline="")
