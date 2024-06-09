@@ -43,7 +43,7 @@ def import_file():
         
 	    
 root = tk.Tk()
-root.title("Horloge linéaire")
+root.title("Linear clock")
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
 canvas.pack()
 root.resizable(False,False)
@@ -123,7 +123,7 @@ def maj() :
 
 import_button = tk.Button(root, text="Import File", command=import_file)
 import_button.pack()
-bouton = tk.Checkbutton(root, text='Prioriser cette fenetre',variable=PLEINE_ECRAN, onvalue=True,offvalue=False, command=boutonpleineecran)
+bouton = tk.Checkbutton(root, text='Prioritise this window',variable=PLEINE_ECRAN, onvalue=True,offvalue=False, command=boutonpleineecran)
 bouton.pack()
 # [R,G,B]
 debase(np.array([0,0,0]),np.array([0,255,0]))
