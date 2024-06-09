@@ -26,9 +26,7 @@ HEIGHT = HAUTEURCASE + MHEIGHT*2 +HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATION
 
 taille=(50,3)
 tabvierge = np.zeros(taille)
-tabvierge[49,0]=0
 tabvierge[49,1]=255
-tabvierge[49,2]=0
 save_file_path_tabvierge = None
 
 # Permet de sauvegarder le fichier tabvierge avec le nom donnée en entrée
@@ -143,10 +141,13 @@ LISTERECTANGLEPALETTE=[]
 
 # GRAPHISME DE LA FENETRE
 def dessinerbarreindex(index) :
+    if (tabvierge[index,0]==0 and tabvierge[index,1]==0 and tabvierge[index,2]==2) :
+        index=48
     c = Color(rgb=(tabvierge[index,0]/255,tabvierge[index,1]/255,tabvierge[index,2]/255))
     color = "%s" %(c.hex)
     canvas.itemconfig(LISTERECTANGLE[index], fill=color)
 
+# redessine toutes les barres du programme
 def reinitialiserbarre() :
     for i in range(0,48,1) :
         dessinerbarreindex(i)
@@ -222,7 +223,9 @@ def init() :
     LISTERECTANGLE.append(rectangle)
     LISTERECTANGLE.append(rectangle)
     canvas.tag_bind(rectangle,'<Button-1>',inputcouleurremplissage)
-
+    # BOUTON IMPORT
+    import_button = tk.Button(root, text="Import File", command=save_new_file_tabvierge)
+    import_button.pack()
 
 def graduation() : 
     #F0F0F2 = gris
