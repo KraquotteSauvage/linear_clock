@@ -21,6 +21,7 @@ taille = (48,3)
 tabactuel = np.zeros(taille)
 taille=(50,3)
 tabvierge = np.zeros(taille)
+tabvierge[49,1]=255
 
 
 def impor(file_path) :
@@ -102,7 +103,7 @@ def graduation() :
 def dessinerbarre() :
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
     for i in range(0,48,1) : 
-        c = Color(rgb=(tabactuel[i,0],tabactuel[i,1],tabactuel[i,2]))
+        c = Color(rgb=(tabactuel[i,0]/255,tabactuel[i,1]/255,tabactuel[i,2]/255))
         color = "%s" %(c.hex)
         departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
         canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline="")
@@ -111,12 +112,12 @@ def dessinerbarre() :
 def maj() :
     tabatemps()
     dessinerbarre()
-    canvas.after(10000,maj)
+    canvas.after(30000,maj)
 
 import_button = tk.Button(root, text="Import File", command=import_file)
 import_button.pack()
 # [R,G,B]
-debase(np.array([0.1,0.1,0.1]),np.array([0.2,1,0.2]))
+debase(np.array([0,0,0]),np.array([0,255,0]))
 impor("default.txt")
 graduation()
 maj()
