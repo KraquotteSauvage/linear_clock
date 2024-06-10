@@ -50,13 +50,20 @@ root.configure(background='#263D42')
 #root.attributes('-alpha', 0.3) modifiable avec un bouton = bonne idée
 #root.overrideredirect(1) à réfléchir avec un boolean
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42",highlightthickness=0)
-canvas.grid(row=0,columnspan=5)
+canvas.grid(row=0,columnspan=2)
 root.resizable(False,False)
 PLEINE_ECRAN=tk.BooleanVar()
+BORDERLESS=tk.BooleanVar()
+
 
 # Bouton pour prioriser l'écran
 def boutonprioriseecran():
     root.attributes("-topmost", PLEINE_ECRAN.get())
+
+#Bonton borderless
+def boutonborderless():
+    root.overrideredirect(True)
+    #root.overrideredirect(BORDERLESS.get())
 
 # Permet de savoir si un crénaux du programme est vide
 def compare(index) : 
@@ -140,9 +147,12 @@ def maj() :
     canvas.after(30000,maj)
 
 import_button = tk.Button(root, text="Import File", command=import_file)
-import_button.grid(row=1,column=3,sticky='w')
+import_button.grid(row=1,column=0)
 bouton = tk.Checkbutton(root, text='Prioritise this window',variable=PLEINE_ECRAN, onvalue=True,offvalue=False, command=boutonprioriseecran)
-bouton.grid(row=1,column=1,sticky='e')
+bouton.grid(row=1,column=1)
+#borderbouton=tk.Checkbutton(root, text='Prioritise this window',variable=BORDERLESS, onvalue=True,offvalue=False, command=boutonborderless)
+#borderbouton.grid(row=1,column=2)
+
 # [R,G,B]
 debase(np.array([0,0,0]),np.array([0,255,0]))
 tabatemps()
