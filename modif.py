@@ -198,7 +198,7 @@ def init() :
     canvas.tag_bind(rectangle,'<Button-1>',inputprogramme)
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
     # AJOUT TEXTE selection couleur
-    text=tk.Label(root,text="Color selector :",fg="white",bg="#263D42")
+    text=tk.Label(canvas,text="Color selector :",fg="white",bg="#263D42")
     text.place(relx = 0.07, 
                    rely = 0.8,
                    anchor = 'center')
@@ -212,12 +212,12 @@ def init() :
     rectangle = canvas.create_rectangle(COTECASEPALETTE,departy,10*(COTECASEPALETTE*2) + COTECASEPALETTE*5,departy+COTECASEPALETTE,fill="",outline="")
     canvas.tag_bind(rectangle,'<Button-1>',inputcolorpalette)
     # AJOUT BOUTON suppression
-    text=tk.Button(root,text="Eraser",command=inputeraser)
-    text.place(relx = 0.7, 
+    bouton=tk.Button(canvas,text="Eraser",command=inputeraser)
+    bouton.place(relx = 0.7, 
                    rely = 0.8,
                    anchor = 'center')
     # ajout texte background color
-    text=tk.Label(root,text="Background :",fg="white",bg="#263D42")
+    text=tk.Label(canvas,text="Background :",fg="white",bg="#263D42")
     text.place(relx = 0.78, 
                    rely = 0.8,
                    anchor = 'center')
@@ -230,7 +230,7 @@ def init() :
     canvas.tag_bind(rectangle,'<Button-1>',inputcouleurarriereplan)
     LISTERECTANGLE.append(rectangle)
     # AJOUT TEXTE couleur par defaut
-    text=tk.Label(root,text="Progression :",fg="white",bg="#263D42")
+    text=tk.Label(canvas,text="Progression :",fg="white",bg="#263D42")
     text.place(relx = 0.9, 
                    rely = 0.8,
                    anchor = 'center')
@@ -238,7 +238,7 @@ def init() :
     c = Color(rgb=(tabvierge[49,0]/255,tabvierge[49,1]/255,tabvierge[49,2]/255))
     color = "%s" %(c.hex)
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE+COTECASEPALETTE//2 +HAUTEURCASE
-    departx=COTECASEPALETTE*35
+    departx=COTECASEPALETTE*34 + 10
     rectangle = canvas.create_rectangle(departx,departy,departx+COTECASEPALETTE,departy+COTECASEPALETTE,fill=color,outline="")
     canvas.tag_bind(rectangle,'<Button-1>',inputcouleurremplissage)
     LISTERECTANGLE.append(rectangle)
