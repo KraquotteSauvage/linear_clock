@@ -47,7 +47,7 @@ def import_file():
 root = tk.Tk()
 root.title("Linear clock")
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
-canvas.pack()
+canvas.grid(row=0,columnspan=2)
 root.resizable(False,False)
 PLEINE_ECRAN=tk.BooleanVar()
 
@@ -137,9 +137,9 @@ def maj() :
     canvas.after(30000,maj)
 
 import_button = tk.Button(root, text="Import File", command=import_file)
-import_button.pack()
+import_button.grid(row=1,column=1,sticky='w')
 bouton = tk.Checkbutton(root, text='Prioritise this window',variable=PLEINE_ECRAN, onvalue=True,offvalue=False, command=boutonprioriseecran)
-bouton.pack()
+bouton.grid(row=1,column=0,sticky='e')
 # [R,G,B]
 debase(np.array([0,0,0]),np.array([0,255,0]))
 tabatemps()
