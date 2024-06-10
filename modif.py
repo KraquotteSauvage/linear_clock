@@ -38,9 +38,9 @@ def save_new_file_tabvierge():
     global save_file_path_tabvierge
     save_file_path =  filedialog.asksaveasfilename(initialdir = "/",title = "Select a day programme",filetypes = (("txt files","*.txt"),("all files","*.*")))
     if save_file_path :
-		# Process the selected file (you can replace this with your own logic)
-        save_file_path_tabvierge=save_file_path
-        save_tabvierge(save_file_path)
+        save_file_path_tabvierge= "%s.txt" %(save_file_path)
+        print(save_file_path_tabvierge)
+        save_tabvierge(save_file_path_tabvierge)
 
 # enregistre tabvierge dans le fichier charger
 def save_file_tabvierge() :
@@ -57,6 +57,7 @@ def impor_tabvierge(file_path) :
         return
     else : 
         tabvierge = tab
+        reinitialiserbarre()
 
 # Importation d'un fichier tabvierge à modifier
 def import_file_tabvierge():
@@ -103,6 +104,7 @@ def impor_colorpalette(file_path) :
     else : 
         print(tab)
         colorpalette = tab
+        
 
 # Importation d'un fichier colorpalette à modifier
 def import_file_colorpalette():
@@ -130,8 +132,10 @@ def setcase(index) :
 
 # INITIALISATION DE LA FENETRE
 root = tk.Tk()
-canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42")
-canvas.pack()
+root.configure(background='#263D42')
+root.title("Day programme modifier ")
+canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42",highlightthickness=0)
+canvas.grid(columnspan=3,row=0)
 root.resizable(False,False)
 
 
@@ -140,6 +144,13 @@ LISTERECTANGLE=[]
 LISTERECTANGLEPALETTE=[]
 
 # GRAPHISME DE LA FENETRE
+
+def reinpalettecouleur():
+    for i in range(0,TAILLE_PALETTE,1):
+        c = Color(rgb=(colorpalette[i,0]/255,colorpalette[i,1]/255,colorpalette[i,2]/255))
+        color = "%s" %(c.hex)
+        canvas.itemconfig(LISTERECTANGLEPALETTE[i], fill=color) 
+
 def dessinerbarreindex(index) :
     if (tabvierge[index,0]==0 and tabvierge[index,1]==0 and tabvierge[index,2]==0) :
         at=48
@@ -151,7 +162,7 @@ def dessinerbarreindex(index) :
 
 # redessine toutes les barres du programme
 def reinitialiserbarre() :
-    for i in range(0,48,1) :
+    for i in range(0,50,1) :
         dessinerbarreindex(i)
         
 # MODIFICATION DU PROGRAMME (BOUTON)
@@ -244,8 +255,16 @@ def init() :
     LISTERECTANGLE.append(rectangle)
     
     # BOUTON IMPORT
-    import_button = tk.Button(root, text="Save file", command=save_new_file_tabvierge)
-    import_button.pack()
+    import_button = tk.Button(root, text="import", command=import_file_tabvierge)
+    import_button.grid(column=0,row=1)
+
+    # BOUTON SAVE AS
+    import_button = tk.Button(root, text="Save file as...", command=save_new_file_tabvierge)
+    import_button.grid(column=1,row=1)
+
+    # BOUTON FAST SAVE
+    import_button = tk.Button(root, text="Save", command=save_file_tabvierge)
+    import_button.grid(column=2,row=1)
 
 def graduation() : 
     #F0F0F2 = gris
