@@ -47,6 +47,8 @@ def import_file():
 root = tk.Tk()
 root.title("Linear clock")
 root.configure(background='#263D42')
+#root.attributes('-alpha', 0.3) modifiable avec un bouton = bonne idée
+#root.overrideredirect(1) à réfléchir avec un boolean
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42",highlightthickness=0)
 canvas.grid(row=0,columnspan=5)
 root.resizable(False,False)
