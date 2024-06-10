@@ -22,7 +22,7 @@ tabactuel = np.zeros(taille)
 taille=(50,3)
 tabvierge = np.zeros(taille)
 tabvierge[49,1]=255
-
+LISTERECTANGLE=[]
 
 def impor(file_path) :
     tab = np.loadtxt(file_path)
@@ -32,7 +32,8 @@ def impor(file_path) :
         return
     else : 
         tabvierge = tab
-        dessinerbarre()
+        tabatemps()
+        reinbarre()
 
 def import_file():
     
@@ -69,6 +70,7 @@ def tabatemps() :
             tabactuel[i]=tabvierge[i]
     for i in range(point,48,1) :
         tabactuel[i]=tabvierge[48]
+    return point-1
 
 def debase(couleurRien,couleurPassee) :
     # tab 48 = quand vide
@@ -103,22 +105,26 @@ def graduation() :
             gradactuel=minigrady
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")   
 
+def dessinerbarreindex(index) :
+    c = Color(rgb=(tabactuel[index,0]/255,tabactuel[index,1]/255,tabactuel[index,2]/255))
+    color = "%s" %(c.hex)
+    canvas.itemconfig(LISTERECTANGLE[index], fill=color)
 
-def dessinerbarre() :
+def reinbarre() :
+    for i in range(0,48,1) :
+        dessinerbarreindex(i)
+
+def initbarre() :
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
     for i in range(0,48,1) : 
-        at=i
-        if (tabactuel[i,0]==0 and tabactuel[i,1]==0 and tabactuel[i,2]==2) :
-            at=48
-        c = Color(rgb=(tabactuel[at,0]/255,tabactuel[at,1]/255,tabactuel[at,2]/255))
+        c = Color(rgb=(tabactuel[i,0]/255,tabactuel[i,1]/255,tabactuel[i,2]/255))
         color = "%s" %(c.hex)
         departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
-        canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline="")
+        LISTERECTANGLE.append(canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline=""))
 
 
 def maj() :
-    tabatemps()
-    dessinerbarre()
+    dessinerbarreindex(tabatemps())
     canvas.after(30000,maj)
 
 import_button = tk.Button(root, text="Import File", command=import_file)
@@ -127,6 +133,8 @@ bouton = tk.Checkbutton(root, text='Prioritise this window',variable=PLEINE_ECRA
 bouton.pack()
 # [R,G,B]
 debase(np.array([0,0,0]),np.array([0,255,0]))
+tabatemps()
 graduation()
+initbarre()
 maj()
 root.mainloop()
