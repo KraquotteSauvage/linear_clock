@@ -24,6 +24,7 @@ tabvierge = np.zeros(taille)
 tabvierge[49,1]=255
 LISTERECTANGLE=[]
 
+# Fonction qui import le fichier
 def impor(file_path) :
     tab = np.loadtxt(file_path)
     global tabvierge
@@ -35,8 +36,8 @@ def impor(file_path) :
         tabatemps()
         reinbarre()
 
+# Fonction pour import avec le bouton import
 def import_file():
-    
     file_path = filedialog.askopenfilename(title="Select a file", filetypes=[("Text files", "*.txt"), ("All files", "*.*")])
     if file_path :
 		# Process the selected file (you can replace this with your own logic)
@@ -50,15 +51,18 @@ canvas.pack()
 root.resizable(False,False)
 PLEINE_ECRAN=tk.BooleanVar()
 
-def boutonpleineecran():
+# Bouton pour prioriser l'écran
+def boutonprioriseecran():
     root.attributes("-topmost", PLEINE_ECRAN.get())
 
+# Permet de savoir si un crénaux du programme est vide
 def compare(index) : 
     for i in range(3) : 
         if tabvierge[index,i]!=0 : 
             return False
     return True
 
+# Met à jour la tabactuel qui est utilisé dans l'affichage et renvoie l'index correspondant à la tranche horaire actuel
 def tabatemps() : 
     temps=tm.localtime(tm.time())
     point = temps.tm_hour*2+1
@@ -72,6 +76,7 @@ def tabatemps() :
         tabactuel[i]=tabvierge[48]
     return point-1
 
+# Créer un programme vide à l'allumage du programme
 def debase(couleurRien,couleurPassee) :
     # tab 48 = quand vide
     # tab 49 = quand déjà finis mais R
@@ -79,6 +84,18 @@ def debase(couleurRien,couleurPassee) :
         tabvierge[48,i]=couleurRien[i]
         tabvierge[49,i]=couleurPassee[i]
 
+# Recolore le rectangle à un index précis
+def dessinerbarreindex(index) :
+    c = Color(rgb=(tabactuel[index,0]/255,tabactuel[index,1]/255,tabactuel[index,2]/255))
+    color = "%s" %(c.hex)
+    canvas.itemconfig(LISTERECTANGLE[index], fill=color)
+
+# recolore toutes les barres verticales du programmes
+def reinbarre() :
+    for i in range(0,48,1) :
+        dessinerbarreindex(i)
+
+# Initialisation de la graduation à l'aide des rectangles
 def graduation() : 
     #F0F0F2 = gris
     # ajout de graduation basé sur l'affichage de l'image
@@ -105,15 +122,7 @@ def graduation() :
             gradactuel=minigrady
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")   
 
-def dessinerbarreindex(index) :
-    c = Color(rgb=(tabactuel[index,0]/255,tabactuel[index,1]/255,tabactuel[index,2]/255))
-    color = "%s" %(c.hex)
-    canvas.itemconfig(LISTERECTANGLE[index], fill=color)
-
-def reinbarre() :
-    for i in range(0,48,1) :
-        dessinerbarreindex(i)
-
+# Initialisation des rectangles du programmes de la journée
 def initbarre() :
     departy=MHEIGHT+HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
     for i in range(0,48,1) : 
@@ -122,14 +131,14 @@ def initbarre() :
         departx=i*(LARGEURCASE+MWIDTH) + MARGECOTE
         LISTERECTANGLE.append(canvas.create_rectangle(departx,departy,departx+LARGEURCASE,departy+HAUTEURCASE,fill=color,outline=""))
 
-
+# fonction de mise à jour de l'affichage
 def maj() :
     dessinerbarreindex(tabatemps())
     canvas.after(30000,maj)
 
 import_button = tk.Button(root, text="Import File", command=import_file)
 import_button.pack()
-bouton = tk.Checkbutton(root, text='Prioritise this window',variable=PLEINE_ECRAN, onvalue=True,offvalue=False, command=boutonpleineecran)
+bouton = tk.Checkbutton(root, text='Prioritise this window',variable=PLEINE_ECRAN, onvalue=True,offvalue=False, command=boutonprioriseecran)
 bouton.pack()
 # [R,G,B]
 debase(np.array([0,0,0]),np.array([0,255,0]))
