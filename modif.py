@@ -84,7 +84,6 @@ def impor_colorpalette(file_path) :
         return
     else : 
         colorpalette = tab
-        print(colorpalette)
         reinpalettecouleur()
         setcouleur(0)
         
@@ -106,10 +105,8 @@ COULEURACTUEL=np.array([0,0,0])
 def setcouleur(index) : 
     for i in range(0,3,1) :
         COULEURACTUEL[i]=colorpalette[index,i]
-    print("couleur selectionner : ",COULEURACTUEL)
 
 def setcase(index) : 
-    print("bouton")
     for i in range(0,3,1) :
         tabvierge[index,i]=COULEURACTUEL[i]
 
@@ -130,7 +127,6 @@ LISTERECTANGLEPALETTE=[]
 
 def reinpalettecouleur():
     for i in range(0,TAILLE_PALETTE,1):
-        print(colorpalette[i])
         c = Color(rgb=(colorpalette[i,0]/255,colorpalette[i,1]/255,colorpalette[i,2]/255))
         color = "%s" %(c.hex)
         canvas.itemconfig(LISTERECTANGLEPALETTE[i], fill=color) 
@@ -159,12 +155,10 @@ def inputprogramme(event) :
 
 
 def inputcouleurremplissage(_) :
-    print("remplissage")
     setcase(49)
     dessinerbarreindex(49)
 
 def inputcouleurarriereplan(_) :
-    print("arriere plan")
     setcase(48)
     dessinerbarreindex(48)
     reinitialiserbarre()
@@ -178,7 +172,6 @@ def inputcolorpalette(event) :
 def inputeraser() :
     for i in range(0,3,1) :
         COULEURACTUEL[i]=ERASER[i]
-    print("couleur selectionner : ",COULEURACTUEL)
 
 
 # initialise les boutons et les graphisùe de l'interface
