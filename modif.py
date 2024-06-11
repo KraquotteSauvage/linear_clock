@@ -101,8 +101,10 @@ def impor_colorpalette(file_path) :
     if (tab.shape != taille) : 
         return
     else : 
-        print(tab)
         colorpalette = tab
+        print(colorpalette)
+        #reinitialiserbarre()
+        #setcouleur(0)
         
 
 # Importation d'un fichier colorpalette à modifier
@@ -134,7 +136,7 @@ root = tk.Tk()
 root.configure(background='#263D42')
 root.title("Day programme modifier ")
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42",highlightthickness=0)
-canvas.grid(columnspan=3,row=0)
+canvas.grid(columnspan=5,row=0)
 root.resizable(False,False)
 
 
@@ -151,7 +153,7 @@ def reinpalettecouleur():
         canvas.itemconfig(LISTERECTANGLEPALETTE[i], fill=color) 
 
 def dessinerbarreindex(index) :
-    if (tabvierge[index,0]==0 and tabvierge[index,1]==0 and tabvierge[index,2]==0) :
+    if (tabvierge[index,0]==0 and tabvierge[index,1]==0 and tabvierge[index,2]==0 and index!=49) :
         at=48
     else :
         at=index
@@ -174,10 +176,12 @@ def inputprogramme(event) :
 
 
 def inputcouleurremplissage(_) :
+    print("remplissage")
     setcase(49)
     dessinerbarreindex(49)
 
 def inputcouleurarriereplan(_) :
+    print("arriere plan")
     setcase(48)
     dessinerbarreindex(48)
     reinitialiserbarre()
@@ -253,17 +257,21 @@ def init() :
     canvas.tag_bind(rectangle,'<Button-1>',inputcouleurremplissage)
     LISTERECTANGLE.append(rectangle)
     
-    # BOUTON IMPORT
-    import_button = tk.Button(root, text="import", command=import_file_tabvierge)
+    # BOUTON IMPORT COLORPALETTE
+    import_button = tk.Button(root, text="Import color palette", command=import_file_colorpalette)
     import_button.grid(column=0,row=1)
+
+    # BOUTON IMPORT
+    import_button = tk.Button(root, text="Import day program", command=import_file_tabvierge)
+    import_button.grid(column=2,row=1)
 
     # BOUTON SAVE AS
     import_button = tk.Button(root, text="Save file as...", command=save_new_file_tabvierge)
-    import_button.grid(column=1,row=1)
+    import_button.grid(column=3,row=1)
 
     # BOUTON FAST SAVE
     import_button = tk.Button(root, text="Save", command=save_file_tabvierge)
-    import_button.grid(column=2,row=1)
+    import_button.grid(column=4,row=1)
 
 def graduation() : 
     #F0F0F2 = gris
@@ -292,7 +300,6 @@ def graduation() :
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")
 
 impor_colorpalette(save_file_path_colorpalette)
-setcouleur(0)
 init()
 graduation()
 root.mainloop()
