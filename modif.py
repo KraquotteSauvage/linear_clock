@@ -75,24 +75,6 @@ colorpalette = np.zeros(taille)
 save_file_path_colorpalette = "default_color_palette.txt"
 ERASER = np.array([0,0,0])
 
-# Permet de sauvegarder la palette de couleur dont le nom est donnée en entrée
-def save_colorpalette(name) : 
-    np.savetxt(name,colorpalette)
-
-# Utilisé pour le bouton enregistrer sous du colorpalette
-def save_new_file_colorpalette():
-    global save_file_path_colorpalette
-    save_file_path =  filedialog.asksaveasfilename(initialdir = "/",title = "Select colour palette",filetypes = (("txt files","*.txt"),("all files","*.*")))
-    if save_file_path :
-		# Process the selected file (you can replace this with your own logic)
-        save_file_path_colorpalette=save_file_path
-        save_colorpalette(save_file_path)
-
-# enregistre colopalette dans le fichier charger
-def save_file_colopalette() :
-    global save_file_path_colorpalette
-    save_colorpalette(save_file_path_colorpalette)
-
 # importe une colorpalette dont le nom est donnee en intro
 def impor_colorpalette(file_path) :
     tab = np.loadtxt(file_path)
@@ -103,8 +85,8 @@ def impor_colorpalette(file_path) :
     else : 
         colorpalette = tab
         print(colorpalette)
-        #reinitialiserbarre()
-        #setcouleur(0)
+        reinpalettecouleur()
+        setcouleur(0)
         
 
 # Importation d'un fichier colorpalette à modifier
@@ -148,6 +130,7 @@ LISTERECTANGLEPALETTE=[]
 
 def reinpalettecouleur():
     for i in range(0,TAILLE_PALETTE,1):
+        print(colorpalette[i])
         c = Color(rgb=(colorpalette[i,0]/255,colorpalette[i,1]/255,colorpalette[i,2]/255))
         color = "%s" %(c.hex)
         canvas.itemconfig(LISTERECTANGLEPALETTE[i], fill=color) 
@@ -299,7 +282,8 @@ def graduation() :
             gradactuel=minigrady
         canvas.create_rectangle(departx,gradactuel,departx+LARGEURGRAD,finy,fill=blanc,outline="")
 
-impor_colorpalette(save_file_path_colorpalette)
+
 init()
 graduation()
+impor_colorpalette(save_file_path_colorpalette)
 root.mainloop()
