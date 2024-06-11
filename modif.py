@@ -38,8 +38,7 @@ def save_new_file_tabvierge():
     global save_file_path_tabvierge
     save_file_path =  filedialog.asksaveasfilename(initialdir = "/",title = "Select a day programme",filetypes = (("txt files","*.txt"),("all files","*.*")))
     if save_file_path :
-        save_file_path_tabvierge= "%s.txt" %(save_file_path)
-        print(save_file_path_tabvierge)
+        save_file_path_tabvierge= save_file_path
         save_tabvierge(save_file_path_tabvierge)
 
 # enregistre tabvierge dans le fichier charger
