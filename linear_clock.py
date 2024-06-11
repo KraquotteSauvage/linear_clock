@@ -1,6 +1,7 @@
 import numpy as np
 import time as tm
 import tkinter as tk
+from tkinter import *
 from tkinter import filedialog
 from colour import Color
 
@@ -23,6 +24,47 @@ taille=(50,3)
 tabvierge = np.zeros(taille)
 tabvierge[49,1]=255
 LISTERECTANGLE=[]
+
+class Grip:
+    ''' Makes a window dragable. '''
+    def __init__ (self, parent, disable=None, releasecmd=None) :
+        self.parent = parent
+        self.root = parent.winfo_toplevel()
+
+        self.disable = disable
+        if type(disable) == 'str':
+            self.disable = disable.lower()
+
+        self.releaseCMD = releasecmd
+
+        self.parent.bind('<Button-1>', self.relative_position)
+        self.parent.bind('<ButtonRelease-1>', self.drag_unbind)
+
+    def relative_position (self, event) :
+        cx, cy = self.parent.winfo_pointerxy()
+        geo = self.root.geometry().split("+")
+        self.oriX, self.oriY = int(geo[1]), int(geo[2])
+        self.relX = cx - self.oriX
+        self.relY = cy - self.oriY
+
+        self.parent.bind('<Motion>', self.drag_wid)
+
+    def drag_wid (self, event) :
+        cx, cy = self.parent.winfo_pointerxy()
+        d = self.disable
+        x = cx - self.relX
+        y = cy - self.relY
+        if d == 'x' :
+            x = self.oriX
+        elif d == 'y' :
+            y = self.oriY
+        self.root.geometry('+%i+%i' % (x, y))
+
+    def drag_unbind (self, event) :
+        self.parent.unbind('<Motion>')
+        if self.releaseCMD != None :
+            self.releaseCMD()
+
 
 # Fonction qui import le fichier
 def impor(file_path) :
@@ -48,7 +90,7 @@ root = tk.Tk()
 root.title("Linear clock")
 root.configure(background='#263D42')
 #root.attributes('-alpha', 0.3) modifiable avec un bouton = bonne idée
-#root.overrideredirect(1) à réfléchir avec un boolean
+root.overrideredirect(1) #à réfléchir avec un boolean
 canvas = tk.Canvas(root,width=WIDTH,height=HEIGHT,bg="#263D42",highlightthickness=0)
 canvas.grid(row=0,columnspan=2)
 root.resizable(False,False)
@@ -158,5 +200,8 @@ debase(np.array([0,0,0]),np.array([0,255,0]))
 tabatemps()
 graduation()
 initbarre()
+grip = Grip(root)
+Ext_but = Button(root, text="X", bg="#FF6666", fg="white", command=lambda: exit())
+Ext_but.place(x=170, y=0, anchor="nw", width=30, height=20)
 maj()
 root.mainloop()
