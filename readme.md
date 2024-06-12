@@ -28,7 +28,7 @@ To use the application, simply click on one of the colours in the colour selecto
 
 It is also possible to change the colour of the bar fill in unmodified time slots. Use the range to delete a colour.
 
-It is also possible to import a colour palette as the default. The file consists of a series of 10 rgb codes separated by a line break.
+It is also possible to import a colour palette as the default. The file consists of a series of 10 rgb codes separated by a line break. Use the default palette as an example.
 
 # Example
 
