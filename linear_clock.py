@@ -8,14 +8,14 @@ from colour import Color
 MWIDTH = 6
 MHEIGHT = 5
 LARGEURCASE = 15
-HAUTEURCASE = 50
+HAUTEURCASE = 20
 HAUTEURTEXTE = 25
 LARGEURBOUTON=0
-HAUTEURGRADATION=30
-MARGECOTE = 40
+HAUTEURGRADATION=10
+MARGECOTE = 20
 DIFGRADATIONTEXTE=5
 LARGEURGRAD=MWIDTH
-WIDTH = LARGEURCASE*48+MWIDTH*49 + MARGECOTE*2 + LARGEURBOUTON
+WIDTH = LARGEURCASE*48+MWIDTH*49 + MARGECOTE*2 + LARGEURBOUTON - 15
 HEIGHT = HAUTEURCASE + MHEIGHT*2 +HAUTEURTEXTE + HAUTEURGRADATION + DIFGRADATIONTEXTE
 
 taille = (48,3)
@@ -202,6 +202,6 @@ graduation()
 initbarre()
 grip = Grip(root)
 Ext_but = Button(root, text="X", bg="#FF6666", fg="white", command= root.destroy )
-Ext_but.place(x=WIDTH-15, y=0, anchor="n", width=30, height=20)
+Ext_but.place(x=WIDTH-15, y=HEIGHT+5, anchor="n", width=30, height=20)
 maj()
 root.mainloop()
