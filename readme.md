@@ -10,8 +10,8 @@ This project consists of two independent applications.
 
 The linear clock is another way of looking at time. The application displays a total of 48 vertical bars that change colour as the day progresses. Each bar represents a half-hour slot.
 
-![image](https://github.com/KraquotteSauvage/horloge_lineaire/assets/73716978/bcec5a15-8e8d-4227-a624-c60360c50698)
-(It is currently 9:18pm at the time of this screenshot and the day's program is empty)
+![image](https://github.com/KraquotteSauvage/linear_clock/assets/73716978/05d30b34-9cb3-4114-96a2-94b0e33cf13c)
+(It is currently 3:16pm at the time of this screenshot and the day's program is empty)
 
 It is possible to prioritise the window, i.e. to prevent a window being placed above it. Ideal for placing in the corner of the screen. You can also import a typical day to display it.
 
